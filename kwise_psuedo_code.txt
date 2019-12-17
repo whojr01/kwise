@@ -1,0 +1,321 @@
+if not in page && token == page
+	if left brace found 
+		set in page true
+		encode directives
+
+	if page has paragraphs
+		process paragraphs
+
+	if page has sentences
+		process sentences
+
+	if right brace found
+
+		if page has directives
+			process directives
+		encode criteria
+	done
+
+
+Process Data File
+
+foreach paragraph
+	encode sentences in order
+		<para name directive> <sentence name directive>	pattern
+
+
+
+
+if no page token found error
+process data file
+
+page -> paragraph 	-> 	sentences
+	status			status
+	directives		directives
+				patterns
+
+
+
+/*
+ *	This struct was refactored out.
+ *
+ *	type  Directive struct {
+ *	  na  string
+ *	  dr  int
+ *	  nx  *Directive
+ *	}
+*/
+
+	
+
+
+Paragraphs
+	get paragraph name
+	add paragraph to parent
+	if paragraph has directives
+		process directives
+
+
+Sentences
+	get sentence name
+	add name to parent
+	get pattern
+	add pattern to sentence
+	if directives
+		process directives
+
+
+pageDirectives = command{
+		":insequence": INSEQUENCE,
+		":unsequence": UNSEQUENCE,
+		":casemixed":  PGMIXED,
+		":caselower":  PGLOWER,
+	}
+
+	paragraphDirectives = command{
+		":oneof":     ONEOF,
+		":someof":    SOMEOF,
+		":anyof":     ANYOF,
+		":allof":     ALLOF,
+		":begin":     BEGIN,
+		":end":       END,
+		":casemixed": PAMIXED,
+		":caselower": PALOWER,
+	}
+
+	sentenceDirectives = command{
+		":isthere":    ISTHERE,
+		":exact":      EXACT,
+		":any":        ANY,
+		":exclude":    EXCLUDE,
+		":follow":     FOLLOW,
+		":regardless": REGARDLESS,
+		":casemixed":  STMIXED,
+		":caselower":  STLOWER,
+		":start":      START,
+	}
+
+	searchDirectives = command{
+		":collect_quote": COLLECT_QUOTE,
+		":collect_line":  COLLECT_LINE,
+		":collect_next":  COLLECT_NEXT,
+		":collect_comma": COLLECT_COMMA,
+		":concat_tab":    CONCAT_TAB,
+		":concat":        CONCAT,
+		":complete":      COMPLETE,
+	}
+
+type CFToken struct {
+	Pos   token.Pos
+	PLine string
+	PTok  token.Token
+	PLit  string
+}
+
+type CFTErr struct {
+	Err  string
+	Line token.Pos
+	Code int
+}
+
+type Page struct {
+	pdl   Directive
+	paras []Paragraph
+	PAcnt int
+}
+
+type Paragraph struct {
+	phdl Directive // Directives for paragraph
+	pna  string    // Name
+	stc  []Pattern // Sentences
+	stcnt	int
+}
+
+type Pattern struct {
+	pi   int       // Pattern index
+	stdl Directive // Directives for Sentences
+	ptdl []Directive // Directives for patterns
+	sna   string    // sentence
+	pt   []string  // pattern to match
+	st   bool      // status
+}
+
+type Results struct {
+	rs []string
+	nx *Results
+}
+
+[DATA] [DATA] [DATA] [DATA] [string]
+
+type Collect struct {
+
+	st  [4]status  			// Status counts
+	dr  [4]lib.Directive		// Directives [page, paragraph, sentence, pattern]
+
+	pid int        			// Paragraph ID
+
+	sid int        			// Sentence ID
+	pat StringList 			// Pattern to match
+
+}
+
+type Directive uint
+
+type command map[string]Directive
+
+
+Initialize the engine
+	
+
+
+start the engine
+
+traverse the PG structure collecting the paragraphs and sentences in order.
+
+	for each paragraph assign a unique numberID
+		if sentence marked as start put in start pattern.
+			If more than one start is found - error
+		If no start is found then first pattern of first sentence is designated as the start token
+
+		list each sentence in order one per entry with
+			paragraphID, paragraph directive, sentence directive, pattern directive, result flag, <pattern>
+				set paragraph directive (oneof, someof, anyof, allof)
+				set sentence directive (isthere, exact, any, exclude, follow, regardless, casemixed, caselower, start)
+				set pattern directive (collect_quote, collect_line, collect_next, collect_comma, concat_tab, concat, complete)
+
+		paragraph bit, sentence bit, pattern counter, results bit, matched, <pattern>
+
+paragraph id	- Identifies the paragraph the pattern is attached too
+Sentence id	- Identifies the sentence the pattern is attached too
+
+paragraph bit	- If non zero indicates paragraph is complete
+sentence bit	- If non zero indicates sentence is complete
+pattern bit	- If non zero indicates the pattern matched successfully
+pattern counter	- Counts the number of matched tokens for the pattern
+results bit	- Indicates the pattern was harvested or ISTHERE is true
+
+para	sent	patb	patc	res	pattern
+0	0	0	0	0	< ! DOCTYPE >
+
+1	0	0	0	0	DIV CLASS = "package"
+1	0	0	0	0	H2 "sect2" 		<collect-next and complete>
+
+1	1	0	0	0	DIV class = "itemizedlist"
+1	1	0	0	0	UL "compact"
+1	1	0	0	0	LI
+1	1	0	0	0	P
+1	1	0	0	0	A HREF = 		<Concat concat_tab complete>
+
+1	2	0	0	0	p class = "required"
+1	2	0	0	0	a title =		<collect quote... etc>
+
+1	3	0	0	0	p class = "optional"
+1	3	0	0	0	a title	=
+
+2	0	0	0	0	kdb class = "command"
+
+
+const (
+	PARA	iota
+
+type collect struct {
+	st	[4]int
+	pid	int	// Paragraph ID
+	sid	int	// Sentence ID
+	pat	[]byte
+
+
+Rules:
+		while there are still tokens
+			for each paragraph
+				if paragraph is complete
+					skip it
+				for each sentence in paragraph
+					if sentence is complete skip it
+
+					for each non-complete pattern in sentence
+						if token equals pattern token
+							increment found pattern counter
+
+						if found pattern counter equals number of pattern tokens
+							mark pattern complete
+							if collect-directive set
+								implement collect
+					end
+
+					if is all sentences marked complete
+						mark paragraph complete
+						break
+				end
+
+				if is complete paragraph
+					if anyof set OR (allof set and found counter equal number of sentences)
+						write paragraph results
+
+					if someof set AND found counter greater than zero
+						write paragraph results
+
+					if oneof set AND found counter equals one
+						write paragraph results
+
+				if token equals new line
+					reset non complete sentence pattern counters
+
+			end
+		end
+
+	A sentence is marked as complete when it successfully executes a sentence collection directive or statisfies an isthere condition.
+
+	Paragraph directives oneof, someof, anyof, and allof are mutually exclusive and the pair begin and end are also mutually exclusive.
+
+		:oneof	- Must match one sentence. Complete if and only if exactly one sentence is matched. (default)
+		:someof	- Must match one or more sentences. Complete if at least one is matched
+		:anyof	- Can match as many as possible or none at all. Marked as complete by default.
+		:allof	- All sentences must match. Complete when all match.
+
+		:isthere - Can't have an action or directive and only returns true or false based on the pattern. 
+
+Patterns:
+	Patterns are matched based on whole tokens, regex expressions are not supported, tokens are groups of characters seperated by
+	a punctuation, numbers, or whitespece.
+
+	The character string 123abc will be interpreted as two sequential tokens "123" and "abc".
+	You can change this behavior using quotes as follows "123abc" enclosed in single/double quotes is interpreted as 123abc. 
+
+	A pattern is matched when all of the tokens is identified on a given line. 
+
+
+
+
+While data file is not eof
+	if page start
+		if sequenced paragraphs
+			process sequenced
+		else
+			process unsequenced
+
+
+process sequenced
+	
+	
+
+
+fill the buffer
+
+	if len of ob > 0 then
+		reduce the length of the read buffer by ob length
+		read in buffer
+		create a temp buffer 1024 chars long
+		copy ob to temp buffer
+		append read buffer to temp buffer
+		buffer gets temp buffer
+	else
+		read in buffer
+	end
+
+	if 
+	locate the first whitespace character at the end of the buffer
+	if character is not at end copy whitespace char to end into ob
+	subtract length of ob from read count
+	set the length of ob to ob (shortening the ob buffer) and save
+	return buffer

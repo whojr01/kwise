@@ -1,0 +1,18 @@
+/* This is a test too see if this handles comments and if so how does it work */
+// This is another test.
+// page :insequence {
+page :insequence
+{
+
+	paragraph commands  {
+		sentence steps {
+			/DIV
+			KBD class="Some code goes here" :collect_next = "</KBD>"
+		}
+		/* sentence foo {
+			/div
+			KBD class="Some code goes here" :collect_line
+		} */
+	}
+
+}

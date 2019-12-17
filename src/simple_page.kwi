@@ -1,0 +1,138 @@
+/* This is a test too see if this handles comments and if so how does it work */
+// This is another test.
+// page :insequence {
+page :insequence
+{
+	paragraph first :begin {
+		sentence :isthere :start {
+			<!DOCTYPE>
+		}
+	}
+	paragraph package {
+		sentence package  {
+			DIV class= "package" 
+			H2 "sect2" :collect_line
+		}
+		sentence download {
+			DIV class= "itemizedlist"
+			UL "compact"
+			LI 
+			P
+			A href= :collect_line
+		}
+		sentence dependencies {
+			P class= "required"
+			A title= :collect_line 
+		}
+		sentence optional {
+			P class= "optional"
+			A title= :collect_line
+		}
+	}
+
+	paragraph commands  {
+		sentence steps {
+			/DIV
+			KBD class="Some code goes here" :collect_next = "</KBD>"
+		}
+	}
+
+	paragraph first2 :begin {
+		sentence :isthere :start {
+			<!DOCTYPE2>
+		}
+	}
+	paragraph package2 {
+		sentence package2  {
+			DIV2 class= "package" 
+			H22 "sect2" :collect_line
+		}
+		sentence download2 {
+			DIV2 class= "itemizedlist"
+			UL2 "compact"
+			LI2 
+			P2
+			A2 href= :collect_line
+		}
+		sentence dependencies2 {
+			P2 class= "required"
+			A2 title= :collect_line 
+		}
+		sentence optional2 {
+			P2 class= "optional"
+			A2 title= :collect_line
+		}
+	}
+
+	paragraph commands2  {
+		sentence steps2 {
+			KBD2 class= "command" 
+		}
+	}
+
+	paragraph first3 :begin {
+		sentence :isthere :start {
+			<!DOCTYPE3>
+		}
+	}
+	paragraph package3 {
+		sentence package3  {
+			DIV3 class= "package" 
+			H23 "sect2" :collect_line
+		}
+		sentence download3 {
+			DIV3 class= "itemizedlist"
+			UL3 "compact"
+			LI3 
+			P3
+			A3 href= :collect_line
+		}
+		sentence dependencies3 {
+			P3 class= "required"
+			A3 title= :collect_line 
+		}
+		sentence optional3 {
+			P3 class= "optional"
+			A3 title= :collect_line
+		}
+	}
+
+	paragraph commands3  {
+		sentence steps3 {
+			KBD3 class= "command" 
+		}
+	}
+
+	paragraph first4 :begin {
+		sentence :isthere :start {
+			<!DOCTYPE4>
+		}
+	}
+	paragraph package4 {
+		sentence package4  {
+			DIV4 class= "package" 
+			H24 "sect2" :collect_line
+		}
+		sentence download4 {
+			DIV4 class= "itemizedlist"
+			UL4 "compact"
+			LI4 
+			P4
+			A4 href= :collect_line
+		}
+		sentence dependencies4 {
+			P4 class= "required"
+			A4 title= :collect_line 
+		}
+		sentence optional4 {
+			P4 class= "optional"
+			A4 title= :collect_line
+		}
+	}
+
+	paragraph commands4  {
+		sentence steps4 {
+			KBD4 class= "Some code goes here" :collect_next = "</kbd4>"
+		}
+	}
+}

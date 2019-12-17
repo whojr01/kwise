@@ -1,0 +1,48 @@
+/* This is a test too see if this handles comments and if so how does it work */
+// This is another test.
+// page :insequence {
+page :insequence :unsequence :casEMixed :caselower
+{
+	paragraph first :begin {
+		sentence :isthere :start {
+			<!DOCTYPE>
+		}
+	}
+	paragraph package :allof  :caselower :anyof
+			:casemixed :end :begin :someof
+			:oneof {
+		sentence package :casemixed
+:isthere
+:ExAct
+:any
+:exclude
+:follow
+:regardless
+:caselower
+:start {
+			DIV class= "package"
+			H2 "sect2" :collect-next :complete
+		}
+		sentence download {
+			DIV class= "itemizedlist"
+			UL "compact"
+			LI
+			P
+			A href= :concat :concat_tab :complete
+		}
+		sentence dependencies {
+			P class= "required"
+			A title= :collect_quote :collect_line collect_next :collect_next :collect_comma
+		}
+		sentence optional :ISTHERE :EXACT :ANY :EXCLUDE :FOLLOW :REGARDLESS :CASEMIXED :CASELOWER :START{
+			P class= "optional"
+			A title= :collect_QUOTE :COLLECT_line collect_NEXT :collect_NEXT :COLLECT_COMMA
+		}
+	}
+
+	paragraph commands :ONEOF :SOMEOF :ANYOF :ALLOF :BEGIN :END :CASEMIXED :CASELOWER {
+		sentence steps {
+			KBD class= "command" 'this too is a string' 123abcd abc123def def123 "123abcd" 12.34 $12.34 :collect_next
+		}
+	}
+}

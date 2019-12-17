@@ -1,0 +1,38 @@
+/* This is a test too see if this handles comments and if so how does it work */
+// This is another test.
+// page :insequence {
+page :insequence :casemixed
+{
+	paragraph first :begin {
+		sentence :isthere :start {
+			<!DOCTYPE>
+		}
+	}
+	paragraph package :allof  :caselower {
+		sentence package :casemixed {
+			DIV class= "package"
+			H2 "sect2" :collect-next :complete
+		}
+		sentence download {
+			DIV class= "itemizedlist"
+			UL "compact"
+			LI
+			P
+			A href= :collect_quote :concat
+		}
+		sentence dependencies {
+			P class= "required"
+			A title= :collect_quote :concat
+		}
+		sentence optional {
+			P class= "optional"
+			A title= :collect_quote :concat
+		}
+	}
+
+	paragraph commands :end :casemixed {
+		sentence steps {
+			KBD class= "command" :collect_next
+		}
+	}
+}
